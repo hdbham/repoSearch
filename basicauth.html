@@ -1,0 +1,100 @@
+<!-- list of scopes: * https://docs.github.com/en/enterprise-server@3.4/developers/apps/building-oauth-apps/scopes-for-oauth-apps#available-scopes  -->
+
+<html>
+
+<head>
+    <!-- import JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+        }
+        
+        #btnGo {
+            padding: 2px;
+            margin: 5px;
+            font-size: 125%;
+            float: right;
+        }
+        
+        #txtToken {
+            font-size: 115%;
+            padding: 3px;
+            width: 69%;
+            font-family: Verdana serif;
+        }
+        
+        .bordered {
+            border: 1px black solid;
+            padding: 2px;
+            margin: 2px;
+            width: 69%;
+        }
+    </style>
+</head>
+
+
+<body>
+
+    <h2>Basic Github Authentication</h2>
+
+
+    <p style="font-family: 'Courier New', Courier, monospace; box-shadow: inset 1px 1px 1px 2px rgba(0,0,0,0.5);">
+
+    </p>
+
+    <div class="bordered">
+        <br>
+        <input type="text" id="txtToken" placeholder="Enter Auth token here!" autocomplete="true" />
+        <br> <br>
+        <small style="margin: 6px;">Need a token? &nbsp;&nbsp; (<a href="https://github.com/settings/tokens/new"><b>Generate it here on Github!</b></a> <br><br><i> (it will ask you for scopes; we only need <u>read access</u> for scope: <u>"public_repo"</u></i> </small>
+        <br> <br>
+        <input type="button" id="btnGo" value="Get Repos" />
+        <br clear="both"> <br>
+    </div>
+
+    <br><br>
+    <hr width="100px">
+    <br>
+
+    <div class="bordered" id="contentDiv">
+        <h3>My Gists:</h3>
+
+
+
+    </div>
+
+    <script>
+        //JQuery selectors:
+        let btnGo = $('#btnGo');
+        let txtToken = $('#txtToken');
+        let contentDiv = $('#contentDiv');
+
+
+        btnGo.click(async() => {
+
+            //jquery makes it WAY easier to do raw HTTP requests:
+
+            //endpoint documentation: https://docs.github.com/en/rest/gists/gists#list-gists-for-the-authenticated-user
+            let url = 'https://api.github.com/gists'
+
+            $.get(url, async(resp) => JSON.parse(resp)).then(
+                async(d) => {
+                    for (let i = 0; i < d.length; i++) {
+                        const e = d[i];
+                        contentDiv.append("<small>")
+                        contentDiv.append(JSON.stringify(e));
+                        contentDiv.append("</small>")
+                        contentDiv.append("<br><hr><br>")
+                    }
+                });
+
+
+            //doesn't even use the token yet but I'm tired lol 
+
+        })
+    </script>
+
+</body>
+
+</html>
