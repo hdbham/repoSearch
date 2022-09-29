@@ -52,6 +52,3 @@ form.addEventListener("submit", event => {
         });
     });
 });
-
-
-
