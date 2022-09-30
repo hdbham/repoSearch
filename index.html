@@ -8,7 +8,7 @@
 </head>
 <body>
     <nav id="navbar">
-      <a href="" class="nav-brand">Github finder</a>
+      <a href="" class="nav-brand">Repo finder</a>
       <ul>
         <li class="nav-item"><a href="about.html">About us</a></li>
         <li><a href="" class="nav-item btn btn-default">Register</a></li>\
@@ -17,11 +17,14 @@
 
     <div class="container" id="main">
         <h1>GitHub repos</h1>
-         <form id="repos-form">
-            <label for="github-username">GitHub username</label>
-            <input id="github-username" type="text" placeholder="GitHub username">
-            <button type="submit" id="get-repos" class="btn btn-default">Get repos</button>
-        </form>
+        <div class="flex-parent">
+            <form id="repos-form">
+                <label for="github-username">GitHub username</label>
+                <input id="github-username" type="text" placeholder="GitHub username">
+                <button type="submit" id="get-repos" class="btn btn-default">Get repos</button>
+            </form>
+            <ul id="user-info" class="hidden"></ul>
+        </div>
         <ul id="repos-list"></ul>
     </div>
 
