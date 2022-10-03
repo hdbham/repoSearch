@@ -30,19 +30,17 @@ class FetchWrapper {
         }).then(response => response.json());
     }
 }
+
 const profilePicture = document.querySelector("#profile-picture");
 const userInfo = document.querySelector("#user-info");
-
 const form = document.querySelector("#repos-form");
 const userName = document.querySelector("#github-username");
 const reposList = document.querySelector("#repos-list");
 
-const GithubAPI = new FetchWrapper("https://api.github.com/users");
+const GithubAPI = new FetchWrapper("https://api.github.com/");
 
-form.addEventListener("submit", event => {
-    event.preventDefault();
-  
-    GithubAPI.get(`/${userName.value}`)
+const renderProfile = () => {
+GithubAPI.get(`users/${userName.value}`)
     .then(data => {
         userInfo.innerHTML = ""
         userInfo.classList.add(`show`)
@@ -50,12 +48,16 @@ form.addEventListener("submit", event => {
         console.log(`${data}`);
         userInfo.insertAdjacentHTML("beforeend",`<h1> ${data.name} </h1>`) 
     })
-   
-    GithubAPI.get(`/${userName.value}/repos`)
+}
+
+
+
+const renderRepoList = () => {
+    GithubAPI.get(`users/${userName.value}/repos`)
+    const user = userName.value
     .then(data =>  {
         reposList.innerHTML = ""
         data.forEach(repo => {
-            console.log(repo)
             reposList.insertAdjacentHTML("beforeend", `<li>
                 <a href="https://github.com/${repo.full_name}" target="_blank">
                 <p> ${repo.pushed_at.toString().substring(0,10)} </p>
@@ -63,6 +65,27 @@ form.addEventListener("submit", event => {
                 <p>${repo.description}</p>
                 </a>
                 </li>`);
-        });
-    })
+                // getLanguages(repo.name, user);
+            })
+        });        
+}
+
+// const getLanguages = (repoName, userName) => {
+//     GithubAPI.get(`repos/${userName}/${repoName}/languages`)
+//     .then(data => {
+//         data.forEach(language => {
+//             console.log(repoName + " " + language)
+//         })
+//     }
+// }
+
+const renderOnSubmit = () => {
+form.addEventListener("submit", event => {
+    event.preventDefault();
+    renderProfile()
+    renderRepoList()
 });
+}
+
+renderOnSubmit();
+
