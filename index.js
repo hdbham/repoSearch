@@ -44,46 +44,51 @@ GithubAPI.get(`users/${userName.value}`)
     .then(data => {
         userInfo.innerHTML = ""
         userInfo.classList.add(`show`)
-        userInfo.insertAdjacentHTML("beforeend",`<img src="${data.avatar_url}">`) 
-        console.log(`${data}`);
-        userInfo.insertAdjacentHTML("beforeend",`<h1> ${data.name} </h1>`) 
+        userInfo.insertAdjacentHTML("beforeend",`<img src="${data.avatar_url}">`);
+        // console.log(`${data}`);
+        userInfo.insertAdjacentHTML("beforeend",`<h1> ${data.name} </h1>`);
     })
 }
 
 
-
 const renderRepoList = () => {
+    // const user = userName.value
     GithubAPI.get(`users/${userName.value}/repos`)
-    const user = userName.value
     .then(data =>  {
         reposList.innerHTML = ""
         data.forEach(repo => {
-            reposList.insertAdjacentHTML("beforeend", `<li>
+            reposList.insertAdjacentHTML("beforeend", `<li id="${repo.name}-card">
                 <a href="https://github.com/${repo.full_name}" target="_blank">
-                <p> ${repo.pushed_at.toString().substring(0,10)} </p>
+                <p> Published: ${repo.pushed_at.toString().substring(0,10)} </p>
                 <h2>${repo.full_name}</h2>
                 <p>${repo.description}</p>
+                <div id="${repo.name}-languages> </div>
                 </a>
                 </li>`);
-                // getLanguages(repo.name, user);
+
+                // appendLanguages(repo.name, user);
             })
         });        
 }
 
-// const getLanguages = (repoName, userName) => {
-//     GithubAPI.get(`repos/${userName}/${repoName}/languages`)
-//     .then(data => {
-//         data.forEach(language => {
-//             console.log(repoName + " " + language)
-//         })
-//     }
+// const appendLanguages = async (repoName, userName) => {
+
+//     const repoLanguages = document.querySelector(`#${repoName}-languages`); // this seems weird.
+
+//     response = await GithubAPI.get(`repos/${userName}/${repoName}/languages`);
+//     const data = await response;
+
+//     for (language in data){
+//             repoLanguages.insertAdjacentHTML("beforeend", `<p>1${language}</p>`);
+//     }    
 // }
+
 
 const renderOnSubmit = () => {
 form.addEventListener("submit", event => {
     event.preventDefault();
-    renderProfile()
-    renderRepoList()
+    renderProfile();
+    renderRepoList();
 });
 }
 
